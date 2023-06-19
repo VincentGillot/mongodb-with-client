@@ -1,0 +1,27 @@
+version: "3.7"
+
+networks:
+  aissistant-network:
+    driver: bridge
+    name: aissistant-network
+    external: true
+
+services:
+  aissistant-express:
+      image: mongo-express
+      container_name: aissistant-express
+      restart: unless-stopped
+      networks:
+        - aissistant-network
+      ports:
+        - 8080:8081
+      environment:
+        - ME_CONFIG_MONGODB_ENABLE_ADMIN=true
+        - ME_CONFIG_MONGODB_AUTH_USERNAME=root
+        - ME_CONFIG_MONGODB_AUTH_PASSWORD=root
+        - ME_CONFIG_MONGODB_PORT=27017
+        - ME_CONFIG_MONGODB_SERVER=aissistant-db
+        - ME_CONFIG_BASICAUTH_USERNAME=admin
+        - ME_CONFIG_BASICAUTH_PASSWORD=admin
+        
+

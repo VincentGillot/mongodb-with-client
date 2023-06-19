@@ -1,0 +1,25 @@
+version: "3.7"
+
+networks:
+  aissistant-network:
+    driver: bridge
+    name: aissistant-network
+    external: true
+
+services:
+  aissistant-db:
+    image: aissistant-db
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: ./Dockerfile.mongo
+    container_name: aissistant-db
+    ports:
+      - 27000:27017
+    volumes:
+      - ./database/data:/mongo/data
+      - ./key:/key
+    env_file:
+      - ./env/development.env
+    networks:
+      - aissistant-network

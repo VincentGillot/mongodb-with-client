@@ -1,0 +1,22 @@
+image: docker:19.03.1
+
+services:
+  - docker:19.03.1-dind
+
+stages:
+  - build-mongo
+  - build-setup
+
+variables:
+  DOCKER_HOST: tcp://docker:2376
+  DOCKER_TLS_CERTDIR: "/certs"
+  CONTAINER_IMAGE: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
+
+build-mongo:
+  stage: build-mongo
+  script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker build -f Dockerfile.mongo --pull -t $CI_REGISTRY_IMAGE:mongo .
+    - docker push $CI_REGISTRY_IMAGE:mongo
+  only:
+    - main
