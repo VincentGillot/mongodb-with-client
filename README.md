@@ -8,29 +8,22 @@ This repository manages the mongodb images for the database. It contains differe
 
 The environment variables for the database image build come from the gitlab variables in this repository.
 
+- KEY_FILE_SECRET
 - MONGO_ROOT_USER
 - MONGO_ROOT_PASSWORD
+- SETUP_USER_AND_KEY
 - MONGO_CLIENT_USER
 - MONGO_CLIENT_PASSWORD
+- MONGO_CLIENT_DATABASE
 
 ## Volumes
 
 These are the database data folders. You can assign them to a volume to access them.
 
-/mongo/data/replica1/data
-/mongo/data/replica2/data
-/mongo/data/replica3/data
+- ./database/data:/mongo/data
 
-## Connection
-
-#### IMPORTANT!
-
-To be able to connect to the Dockerized Replica Set, windows must know where to find the reference for the container name in the replica set config. You have to edit the hosts file so the localhost has a reference to it:
-
-127.0.0.1 sl-replica-1 sl-replica-2 sl-replica-3
-
-##### Connection string
+## Connection string
 
 Use this connection string to connect:
 
-`mongodb://{MONGO_CLIENT_USER}:{MONGO_CLIENT_PASSWORD}@localhost:27017,localhost:27018,localhost:27019/main?replicaSet=rs0&readPreference=primary&ssl=false&authSource=admin`
+`mongodb://{MONGO_CLIENT_USER}:{MONGO_CLIENT_PASSWORD}@localhost:27017/main?ssl=false&authSource=admin`
